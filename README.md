@@ -1,8 +1,7 @@
 # 1. Fang
 A programming language made in C
 ## 1.1. Meaning
-> Fang stands for "Feline Language". In hopes of it being cool like a cat!
-
+> Fang stands for "Feline Language". In hopes of it being cool like a cat!  
 > On top of it, you can _byte_ with fang!
 ## 1.2. Example code
 ```

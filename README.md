@@ -32,6 +32,7 @@ functionName(): i32 {
 ```
 ## 1.3. Conventions
 > The file extentions for the source code is `.fang`
+
 | Statement              | Syntax                                              | Example                                                |
 | ---------------------- | --------------------------------------------------- | ------------------------------------------------------ |
 | Comment                | `// text`                                           | `// comment`                                           |

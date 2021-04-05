@@ -32,12 +32,13 @@ functionName(): i32 {
 ```
 ## 1.3. Conventions
 > The file extentions for the source code is `.fang`
-Statement|Syntax|Example
-Comment|`// text`|`// comment`
-Variables|`varName: type`|`x: i32`
-Functions|`func(): type`|`func(): i32 {}`
-If and else statements|`(conditional)? {}: {}`|`(x>5)? {}`
-Switch statements|`(variable)? {cmp: statement, _: defaultStatement}`|`(x)? {1: print(1), 2: print(2), _: print("Default")}`
+| Statement              | Syntax                                              | Example                                                |
+| ---------------------- | --------------------------------------------------- | ------------------------------------------------------ |
+| Comment                | `// text`                                           | `// comment`                                           |
+| Variables              | `varName: type`                                     | `x: i32`                                               |
+| Functions              | `func(): type`                                      | `func(): i32 {}`                                       |
+| If and else statements | `(conditional)? {}: {}`                             | `(x>5)? {}`                                            |
+| Switch statements      | `(variable)? {cmp: statement, _: defaultStatement}` | `(x)? {1: print(1), 2: print(2), _: print("Default")}` |
 ## 1.4. To-do
 ### 1.4.1. Front end
 - [x] Lexer

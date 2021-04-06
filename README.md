@@ -4,7 +4,7 @@ A programming language made in C
 > Fang stands for "Feline Language". In hopes of it being cool like a cat!  
 > On top of it, you can _byte_ with fang!
 ## 1.2. Latest change
-> Implemented comments into the lexer
+> Implemented escapes for strings
 ## 1.3. Example code
 ```
 // variables

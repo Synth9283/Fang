@@ -81,8 +81,19 @@ token_t *lexerGetString(lexer_t *lexer) {
     while (lexer->c != '"') {
         char *s = lexerCharToString(lexer);
         val = realloc(val, (strlen(val)+strlen(s)+1)*sizeof(char));
-        strcat(val, s);
 
+        if (lexer->c == '\\') {
+            lexerAdvance(lexer);
+            switch (lexer->c) {
+                case '\\': strcat(val, "\\"); break;
+                case 'n': strcat(val, "\n"); break;
+                case '"': strcat(val, "\""); break; 
+                default: break;
+            }
+        }
+        else {
+            strcat(val, s);
+        }
         lexerAdvance(lexer);
     }
 

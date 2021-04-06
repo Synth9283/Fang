@@ -25,11 +25,18 @@ void lexerWhiteSpace(lexer_t *lexer) {
     while (lexer->c == ' ' || lexer->c == '\n') lexerAdvance(lexer);
 }
 
+void lexerComment(lexer_t *lexer) {
+    lexerAdvance(lexer);
+    
+    if (lexer->c == '/') while (lexer->c != '\n') lexerAdvance(lexer);
+}
+
 token_t *lexerNextToken(lexer_t *lexer) {
     while (lexer->c && lexer->i < lexer->len) {
         if (lexer->c == ' ' || lexer->c == '\n') lexerWhiteSpace(lexer);
         if (isalnum(lexer->c)) return lexerGetId(lexer);
         if (lexer->c == '"') return lexerGetString(lexer);
+        else if (lexer->c == '/') lexerComment(lexer);
         switch (lexer->c) {
             case '=': return lexerNextWithToken(lexer, tokenInit(TOKEN_EQUALS, lexerCharToString(lexer))); break;
             case '?': return lexerNextWithToken(lexer, tokenInit(TOKEN_IF, lexerCharToString(lexer))); break;

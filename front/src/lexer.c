@@ -39,8 +39,8 @@ token_t *lexerNextToken(lexer_t *lexer) {
         else if (lexer->c == '/') lexerComment(lexer);
         switch (lexer->c) {
             case '=': return lexerNextWithToken(lexer, tokenInit(TOKEN_EQUALS, lexerCharToString(lexer))); break;
-            case '?': return lexerNextWithToken(lexer, tokenInit(TOKEN_IF, lexerCharToString(lexer))); break;
-            case ':': return lexerNextWithToken(lexer, tokenInit(TOKEN_ELSE, lexerCharToString(lexer))); break;
+            case '?': return lexerNextWithToken(lexer, tokenInit(TOKEN_QUESTION, lexerCharToString(lexer))); break;
+            case ':': return lexerNextWithToken(lexer, tokenInit(TOKEN_COLON, lexerCharToString(lexer))); break;
             case '!': return lexerNextWithToken(lexer, tokenInit(TOKEN_NOT, lexerCharToString(lexer))); break;
             case '>': return lexerNextWithToken(lexer, tokenInit(TOKEN_GTHAN, lexerCharToString(lexer))); break;
             case '<': return lexerNextWithToken(lexer, tokenInit(TOKEN_LTHAN, lexerCharToString(lexer))); break;
@@ -53,8 +53,8 @@ token_t *lexerNextToken(lexer_t *lexer) {
 
             // TOKEN_ID,
             // TOKEN_EQUALS,
-            // TOKEN_IF,
-            // TOKEN_ELSE,
+            // TOKEN_QUESTION,
+            // TOKEN_COLON,
             // TOKEN_TYPE,
             // TOKEN_NOT,
             // TOKEN_GTHAN,

@@ -5,8 +5,8 @@ typedef struct {
     enum {
         TOKEN_ID = 0,
         TOKEN_EQUALS = 1,
-        TOKEN_IF = 2,
-        TOKEN_ELSE = 3,
+        TOKEN_QUESTION = 2,
+        TOKEN_COLON = 3,
         TOKEN_TYPE = 4,
         TOKEN_NOT = 5,
         TOKEN_GTHAN = 6,

@@ -14,10 +14,11 @@ typedef struct {
         TOKEN_DEFAULT = 8,
         TOKEN_STRING = 9,
         TOKEN_SEMI = 10,
-        TOKEN_LPAREN = 11,
-        TOKEN_RPAREN = 12,
-        TOKEN_LCURL = 13,
-        TOKEN_RCURL = 14
+        TOKEN_COMMA = 11,
+        TOKEN_LPAREN = 12,
+        TOKEN_RPAREN = 13,
+        TOKEN_LCURL = 14,
+        TOKEN_RCURL = 15
     } type;
 } token_t;
 

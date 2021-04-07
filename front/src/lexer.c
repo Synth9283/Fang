@@ -46,30 +46,37 @@ token_t *lexerNextToken(lexer_t *lexer) {
             case '<': return lexerNextWithToken(lexer, tokenInit(TOKEN_LTHAN, lexerCharToString(lexer))); break;
             case '_': return lexerNextWithToken(lexer, tokenInit(TOKEN_DEFAULT, lexerCharToString(lexer))); break;
             case ';': return lexerNextWithToken(lexer, tokenInit(TOKEN_SEMI, lexerCharToString(lexer))); break;
+            case ',': return lexerNextWithToken(lexer, tokenInit(TOKEN_COMMA, lexerCharToString(lexer))); break;
             case '(': return lexerNextWithToken(lexer, tokenInit(TOKEN_LPAREN, lexerCharToString(lexer))); break;
             case ')': return lexerNextWithToken(lexer, tokenInit(TOKEN_RPAREN, lexerCharToString(lexer))); break;
             case '{': return lexerNextWithToken(lexer, tokenInit(TOKEN_LCURL, lexerCharToString(lexer))); break;
             case '}': return lexerNextWithToken(lexer, tokenInit(TOKEN_RCURL, lexerCharToString(lexer))); break;
 
-            // TOKEN_ID,
-            // TOKEN_EQUALS,
-            // TOKEN_QUESTION,
-            // TOKEN_COLON,
-            // TOKEN_TYPE,
-            // TOKEN_NOT,
-            // TOKEN_GTHAN,
-            // TOKEN_LTHAN,
-            // TOKEN_DEFAULT,
-            // TOKEN_STRING,
-            // TOKEN_SEMI,
-            // TOKEN_LPAREN,
-            // TOKEN_RPAREN,
-            // TOKEN_LCURL,
-            // TOKEN_RCURL
+            // TOKEN_ID = 0,
+            // TOKEN_EQUALS = 1,
+            // TOKEN_QUESTION = 2,
+            // TOKEN_COLON = 3,
+            // TOKEN_TYPE = 4,
+            // TOKEN_NOT = 5,
+            // TOKEN_GTHAN = 6,
+            // TOKEN_LTHAN = 7,
+            // TOKEN_DEFAULT = 8,
+            // TOKEN_STRING = 9,
+            // TOKEN_SEMI = 10,
+            // TOKEN_COMMA = 11,
+            // TOKEN_LPAREN = 12,
+            // TOKEN_RPAREN = 13,
+            // TOKEN_LCURL = 14,
+            // TOKEN_RCURL = 15
         }
     }
-
     return NULL;
+}
+
+token_t *lexerNextWithToken(lexer_t *lexer, token_t *token) {
+    lexerAdvance(lexer);
+
+    return token;
 }
 
 token_t *lexerGetString(lexer_t *lexer) {
@@ -85,9 +92,14 @@ token_t *lexerGetString(lexer_t *lexer) {
         if (lexer->c == '\\') {
             lexerAdvance(lexer);
             switch (lexer->c) {
-                case '\\': strcat(val, "\\"); break;
+                case 'b': strcat(val, "\b"); break;
+                case 'f': strcat(val, "\f"); break;
                 case 'n': strcat(val, "\n"); break;
-                case '"': strcat(val, "\""); break; 
+                case 'r': val[0] = '\0'; break;  
+                case 't': strcat(val, "\t"); break;
+                case 'v': strcat(val, "\v"); break;
+                case '"': strcat(val, "\""); break;
+                case '\\': strcat(val, "\\"); break;
                 default: break;
             }
         }
@@ -114,12 +126,6 @@ token_t *lexerGetId(lexer_t *lexer) {
     }
 
     return tokenInit(TOKEN_ID, val);
-}
-
-token_t *lexerNextWithToken(lexer_t *lexer, token_t *token) {
-    lexerAdvance(lexer);
-
-    return token;
 }
 
 char *lexerCharToString(lexer_t *lexer) {

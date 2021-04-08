@@ -16,6 +16,7 @@ lexer_t *lexerInit(char *content) {
 
 void lexerAdvance(lexer_t *lexer) {
     if (lexer->c && lexer->i < lexer->len) {
+        lexer->prev = lexer->c;
         lexer->i++;
         lexer->c = lexer->content[lexer->i];
     }
@@ -28,7 +29,7 @@ void lexerWhiteSpace(lexer_t *lexer) {
 void lexerComment(lexer_t *lexer) {
     lexerAdvance(lexer);
     
-    if (lexer->c == '/') while (lexer->c != '\n') lexerAdvance(lexer);
+    if (lexer->c == '/' && lexer->prev == '/') while (lexer->c != '\n') lexerAdvance(lexer);
 }
 
 token_t *lexerNextToken(lexer_t *lexer) {
@@ -38,36 +39,80 @@ token_t *lexerNextToken(lexer_t *lexer) {
         if (lexer->c == '"') return lexerGetString(lexer);
         else if (lexer->c == '/') lexerComment(lexer);
         switch (lexer->c) {
-            case '=': return lexerNextWithToken(lexer, tokenInit(TOKEN_EQUALS, lexerCharToString(lexer))); break;
-            case '?': return lexerNextWithToken(lexer, tokenInit(TOKEN_QUESTION, lexerCharToString(lexer))); break;
-            case ':': return lexerNextWithToken(lexer, tokenInit(TOKEN_COLON, lexerCharToString(lexer))); break;
-            case '!': return lexerNextWithToken(lexer, tokenInit(TOKEN_NOT, lexerCharToString(lexer))); break;
-            case '>': return lexerNextWithToken(lexer, tokenInit(TOKEN_GTHAN, lexerCharToString(lexer))); break;
-            case '<': return lexerNextWithToken(lexer, tokenInit(TOKEN_LTHAN, lexerCharToString(lexer))); break;
+            case '+': return lexerGetOperatorToken(lexer); break;
+            case '-': return lexerGetOperatorToken(lexer); break;
+            case '*': return lexerGetOperatorToken(lexer); break;
+            case '/': return lexerGetOperatorToken(lexer); break;
+            case '%': return lexerGetOperatorToken(lexer); break;
+            case '=': return lexerGetOperatorToken(lexer); break;
+            case '!': return lexerGetOperatorToken(lexer); break;
+            case '&': return lexerGetOperatorToken(lexer); break;
+            case '|': return lexerGetOperatorToken(lexer); break;
+            case '^': return lexerGetOperatorToken(lexer); break;
+            case '>': return lexerGetOperatorToken(lexer); break;
+            case '<': return lexerGetOperatorToken(lexer); break;
+            case '~': return lexerNextWithToken(lexer, tokenInit(TOKEN_BNOT, lexerCharToString(lexer))); break;
             case '_': return lexerNextWithToken(lexer, tokenInit(TOKEN_DEFAULT, lexerCharToString(lexer))); break;
+            case '?': return lexerNextWithToken(lexer, tokenInit(TOKEN_IF, lexerCharToString(lexer))); break;
+            case ':': return lexerNextWithToken(lexer, tokenInit(TOKEN_COLON, lexerCharToString(lexer))); break;
             case ';': return lexerNextWithToken(lexer, tokenInit(TOKEN_SEMI, lexerCharToString(lexer))); break;
+            case '.': return lexerNextWithToken(lexer, tokenInit(TOKEN_PERIOD, lexerCharToString(lexer))); break;
             case ',': return lexerNextWithToken(lexer, tokenInit(TOKEN_COMMA, lexerCharToString(lexer))); break;
+            case '[': return lexerNextWithToken(lexer, tokenInit(TOKEN_LBRACKET, lexerCharToString(lexer))); break;
+            case ']': return lexerNextWithToken(lexer, tokenInit(TOKEN_RBRACKET, lexerCharToString(lexer))); break;
             case '(': return lexerNextWithToken(lexer, tokenInit(TOKEN_LPAREN, lexerCharToString(lexer))); break;
             case ')': return lexerNextWithToken(lexer, tokenInit(TOKEN_RPAREN, lexerCharToString(lexer))); break;
             case '{': return lexerNextWithToken(lexer, tokenInit(TOKEN_LCURL, lexerCharToString(lexer))); break;
             case '}': return lexerNextWithToken(lexer, tokenInit(TOKEN_RCURL, lexerCharToString(lexer))); break;
 
-            // TOKEN_ID = 0,
-            // TOKEN_EQUALS = 1,
-            // TOKEN_QUESTION = 2,
-            // TOKEN_COLON = 3,
-            // TOKEN_TYPE = 4,
-            // TOKEN_NOT = 5,
-            // TOKEN_GTHAN = 6,
-            // TOKEN_LTHAN = 7,
-            // TOKEN_DEFAULT = 8,
-            // TOKEN_STRING = 9,
-            // TOKEN_SEMI = 10,
-            // TOKEN_COMMA = 11,
-            // TOKEN_LPAREN = 12,
-            // TOKEN_RPAREN = 13,
-            // TOKEN_LCURL = 14,
-            // TOKEN_RCURL = 15
+            // TOKEN_ID,
+            // TOKEN_ADD, // +
+            // TOKEN_SUB, // -
+            // TOKEN_MULT, // *
+            // TOKEN_DIV, // /
+            // TOKEN_MOD, // %
+            // TOKEN_INC, // ++
+            // TOKEN_DEC, // --
+            // TOKEN_EQU, // ==
+            // TOKEN_NEQU, // !=
+            // TOKEN_GTHAN, // >
+            // TOKEN_GTEQU, // >=
+            // TOKEN_LTHAN, // <
+            // TOKEN_LTEQU, // <=
+            // TOKEN_NOT, // !
+            // TOKEN_LAND, // &&
+            // TOKEN_LOR, // ||
+            // TOKEN_BNOT, // ~
+            // TOKEN_BAND, // &
+            // TOKEN_OR, // |
+            // TOKEN_XOR, // ^
+            // TOKEN_LSHIFT, // <<
+            // TOKEN_RSHIFT, // >>
+            // TOKEN_ASSIGN, // =
+            // TOKEN_AASSIGN, // +=
+            // TOKEN_SASSIGN, // -=
+            // TOKEN_MULTASSIGN, // *=
+            // TOKEN_DASSIGN, // /=
+            // TOKEN_MODASSIGN, // %=
+            // TOKEN_ANDASSIGN, // &=
+            // TOKEN_ORASSIGN, // |=
+            // TOKEN_XORASSIGN, // ^=
+            // TOKEN_LSHIFTASSIGN, // <<=
+            // TOKEN_RSHIFTASSIGN, // >>=
+            // TOKEN_DREF, // ->
+            // TOKEN_DEFAULT, // _
+            // TOKEN_STRING, // "
+            // TOKEN_IF, // ?
+            // TOKEN_COLON, // :
+            // TOKEN_SEMI, // ;
+            // TOKEN_PERIOD, // .
+            // TOKEN_COMMA, // ,
+            // TOKEN_LBRACKET, // [
+            // TOKEN_RBRACKET, // ]
+            // TOKEN_LPAREN, // (
+            // TOKEN_RPAREN, // )
+            // TOKEN_LCURL, // {
+            // TOKEN_RCURL // }
         }
     }
     return NULL;
@@ -111,6 +156,84 @@ token_t *lexerGetString(lexer_t *lexer) {
 
     lexerAdvance(lexer);
     return tokenInit(TOKEN_STRING, val);
+}
+
+token_t *lexerGetOperatorToken(lexer_t *lexer) {
+    lexerAdvance(lexer);
+
+    switch (lexer->prev) {
+        case '+': switch (lexer->c) {
+            case '+': lexerAdvance(lexer); return tokenInit(TOKEN_INC, "++"); break;
+            case '=': lexerAdvance(lexer); return tokenInit(TOKEN_AASSIGN, "+="); break;
+            default: return tokenInit(TOKEN_ADD, "+"); break;
+        }
+        case '-': switch (lexer->c) {
+            case '-': lexerAdvance(lexer); return tokenInit(TOKEN_DEC, "--"); break;
+            case '=': lexerAdvance(lexer); return tokenInit(TOKEN_DASSIGN, "-="); break;
+            case '>': lexerAdvance(lexer); return tokenInit(TOKEN_DREF, "->"); break;
+            default: return tokenInit(TOKEN_SUB, "-"); break;
+        }
+        case '*': switch (lexer->c) {
+            case '=': lexerAdvance(lexer); return tokenInit(TOKEN_MULTASSIGN, "*="); break;
+            default: return tokenInit(TOKEN_MULT, "*"); break;
+        }
+        case '/': switch (lexer->c) {
+            case '=': lexerAdvance(lexer); return tokenInit(TOKEN_DASSIGN, "/="); break;
+            default: return tokenInit(TOKEN_DIV, "/"); break;
+        }
+        case '%': switch (lexer->c) {
+            case '=': lexerAdvance(lexer); return tokenInit(TOKEN_MODASSIGN, "%="); break;
+            default: return tokenInit(TOKEN_MOD, "%"); break;
+        }
+        case '=': switch (lexer->c) {
+            case '=': lexerAdvance(lexer); return tokenInit(TOKEN_EQU, "=="); break;
+            default: return tokenInit(TOKEN_ASSIGN, "="); break;
+        }
+        case '!': switch (lexer->c) {
+            case '=': lexerAdvance(lexer); return tokenInit(TOKEN_NEQU, "!="); break;
+            default: return tokenInit(TOKEN_NOT, "!"); break;
+        }
+        case '&': switch (lexer->c) {
+            case '&': lexerAdvance(lexer); return tokenInit(TOKEN_LAND, "&&"); break;
+            case '=': lexerAdvance(lexer); return tokenInit(TOKEN_ANDASSIGN, "&="); break;
+            default: return tokenInit(TOKEN_BAND, "&"); break;
+        }
+        case '|': switch (lexer->c) {
+            case '|': lexerAdvance(lexer); return tokenInit(TOKEN_LOR, "||"); break;
+            case '=': lexerAdvance(lexer); return tokenInit(TOKEN_ORASSIGN, "|="); break;
+            default: return tokenInit(TOKEN_OR, "|"); break;
+        }
+        case '^': switch (lexer->c) {
+            case '=': lexerAdvance(lexer); return tokenInit(TOKEN_XORASSIGN, "^="); break;
+            default: return tokenInit(TOKEN_XOR, "^"); break;
+        }
+        case '>': switch (lexer->c) {
+            case '=': lexerAdvance(lexer); return tokenInit(TOKEN_GTEQU, ">="); break;
+            case '>': {
+                lexerAdvance(lexer);
+                if (lexer->c == '=') {
+                    lexerAdvance(lexer);
+                    return tokenInit(TOKEN_RSHIFTASSIGN, ">>=");
+                }
+                else return tokenInit(TOKEN_RSHIFT, ">>");
+                break;
+            }
+            default: return tokenInit(TOKEN_GTHAN, ">"); break;
+        }
+        case '<': switch (lexer->c) {
+            case '=': lexerAdvance(lexer); return tokenInit(TOKEN_LTEQU, "<="); break;
+            case '<': {
+                lexerAdvance(lexer);
+                if (lexer->c == '=') {
+                    lexerAdvance(lexer);
+                    return tokenInit(TOKEN_LSHIFTASSIGN, "<<=");
+                }
+                else return tokenInit(TOKEN_LSHIFT, "<<");
+                break;
+            }
+            default: return tokenInit(TOKEN_LTHAN, "<"); break;
+        }
+    }
 }
 
 token_t *lexerGetId(lexer_t *lexer) {

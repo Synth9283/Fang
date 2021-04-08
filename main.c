@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
         lexer_t *lexer = lexerInit(readFile(argv[1]));
         token_t *token = NULL;
 
-        while (token = lexerNextToken(lexer)) printf("Type: %d, Value: %s\n", token->type, token->val);
+        while (token = lexerNextToken(lexer)) printf("Type: %s, Value: %s\n", tokenTypeString(token), token->val);
     }
 
     return 0;

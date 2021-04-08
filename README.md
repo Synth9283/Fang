@@ -4,7 +4,7 @@ A programming language made in C
 > Fang stands for "Feline Language". In hopes of it being cool like a cat!  
 > On top of it, you can _byte_ with fang!
 ## 1.2. Latest change
-> Implemented escapes for strings
+> Added a bunch of operators to the lexer
 ## 1.3. Example code
 ```
 // variables
@@ -44,6 +44,6 @@ functionName(): i32 {
 | Switch statements      | `(variable)? {cmp: statement, _: defaultStatement}` | `(x)? {1: print(1), 2: print(2), _: print("Default")}` |
 ## 1.5. To-do
 ### 1.5.1. Front end
-- [ ] Lexer
+- [x] Lexer
 - [ ] Parser
 - [ ] Semantic analyzer

@@ -3,23 +3,56 @@
 typedef struct {
     char *val;
     enum {
-        TOKEN_ID = 0,
-        TOKEN_EQUALS = 1,
-        TOKEN_QUESTION = 2,
-        TOKEN_COLON = 3,
-        TOKEN_TYPE = 4,
-        TOKEN_NOT = 5,
-        TOKEN_GTHAN = 6,
-        TOKEN_LTHAN = 7,
-        TOKEN_DEFAULT = 8,
-        TOKEN_STRING = 9,
-        TOKEN_SEMI = 10,
-        TOKEN_COMMA = 11,
-        TOKEN_LPAREN = 12,
-        TOKEN_RPAREN = 13,
-        TOKEN_LCURL = 14,
-        TOKEN_RCURL = 15
+        TOKEN_ID,
+        TOKEN_ADD, // +
+        TOKEN_SUB, // -
+        TOKEN_MULT, // *
+        TOKEN_DIV, // /
+        TOKEN_MOD, // %
+        TOKEN_INC, // ++
+        TOKEN_DEC, // --
+        TOKEN_EQU, // ==
+        TOKEN_NEQU, // !=
+        TOKEN_GTHAN, // >
+        TOKEN_GTEQU, // >=
+        TOKEN_LTHAN, // <
+        TOKEN_LTEQU, // <=
+        TOKEN_NOT, // !
+        TOKEN_LAND, // &&
+        TOKEN_LOR, // ||
+        TOKEN_BNOT, // ~
+        TOKEN_BAND, // &
+        TOKEN_OR, // |
+        TOKEN_XOR, // ^
+        TOKEN_LSHIFT, // <<
+        TOKEN_RSHIFT, // >>
+        TOKEN_ASSIGN, // =
+        TOKEN_AASSIGN, // +=
+        TOKEN_SASSIGN, // -=
+        TOKEN_MULTASSIGN, // *=
+        TOKEN_DASSIGN, // /=
+        TOKEN_MODASSIGN, // %=
+        TOKEN_ANDASSIGN, // &=
+        TOKEN_ORASSIGN, // |=
+        TOKEN_XORASSIGN, // ^=
+        TOKEN_LSHIFTASSIGN, // <<=
+        TOKEN_RSHIFTASSIGN, // >>=
+        TOKEN_DREF, // ->
+        TOKEN_DEFAULT, // _
+        TOKEN_STRING, // "
+        TOKEN_IF, // ?
+        TOKEN_COLON, // :
+        TOKEN_SEMI, // ;
+        TOKEN_PERIOD, // .
+        TOKEN_COMMA, // ,
+        TOKEN_LBRACKET, // [
+        TOKEN_RBRACKET, // ]
+        TOKEN_LPAREN, // (
+        TOKEN_RPAREN, // )
+        TOKEN_LCURL, // {
+        TOKEN_RCURL // }
     } type;
 } token_t;
 
 token_t *tokenInit(uint32_t type, char *val);
+char *tokenTypeString(token_t *token);
